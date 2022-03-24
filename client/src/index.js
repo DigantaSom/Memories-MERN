@@ -9,6 +9,8 @@ import rootReducer from './reducers';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import './index.css';
+
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))

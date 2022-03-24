@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import FileBase from 'react-file-base64';
+
+import { createPost } from '../../actions/posts';
 
 import useStyles from './styles';
 
@@ -13,6 +16,7 @@ const Form = () => {
     selectedFile: '',
   });
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     setPostData({
@@ -21,7 +25,10 @@ const Form = () => {
     });
   };
 
-  const handleSubmit = e => {};
+  const handleSubmit = e => {
+    e.preventDefault();
+    dispatch(createPost(postData));
+  };
 
   const onClear = () => {};
 
@@ -36,6 +43,14 @@ const Form = () => {
         <Typography variant='h6'>Creating a Memory</Typography>
         <TextField
           variant='outlined'
+          label='Creator'
+          fullWidth
+          name='creator'
+          value={postData.creator}
+          onChange={handleChange}
+        />
+        <TextField
+          variant='outlined'
           label='Title'
           fullWidth
           name='title'
@@ -48,14 +63,6 @@ const Form = () => {
           fullWidth
           name='message'
           value={postData.message}
-          onChange={handleChange}
-        />
-        <TextField
-          variant='outlined'
-          label='Creator'
-          fullWidth
-          name='creator'
-          value={postData.creator}
           onChange={handleChange}
         />
         <TextField
