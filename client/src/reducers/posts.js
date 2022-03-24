@@ -1,4 +1,4 @@
-import { CREATE, FETCH_ALL } from '../actions/posts';
+import { CREATE, FETCH_ALL, UPDATE } from '../actions/posts';
 
 const initialState = [];
 
@@ -9,6 +9,11 @@ const postsReducer = (state = initialState, action) => {
 
     case CREATE:
       return [...state, action.payload];
+
+    case UPDATE:
+      return state.map(post =>
+        post._id === action.payload._id ? action.payload : post
+      );
 
     default:
       return state;

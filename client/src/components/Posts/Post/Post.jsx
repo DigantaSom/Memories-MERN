@@ -16,7 +16,17 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import useStyles from './styles';
 
 const Post = ({
-  post: { title, creator, message, selectedFile, createdAt, tags, likeCount },
+  post: {
+    _id,
+    title,
+    creator,
+    message,
+    selectedFile,
+    createdAt,
+    tags,
+    likeCount,
+  },
+  setCurrentId,
 }) => {
   dayjs.extend(relativeTime);
   const classes = useStyles();
@@ -33,7 +43,11 @@ const Post = ({
         <Typography variant='body2'>{dayjs(createdAt).fromNow()}</Typography>
       </div>
       <div className={classes.overlay2}>
-        <Button style={{ color: 'white' }} size='small' onClick={() => {}}>
+        <Button
+          style={{ color: 'white' }}
+          size='small'
+          onClick={() => setCurrentId(_id)}
+        >
           <MoreHorizIcon fontSize='medium' />
         </Button>
       </div>
@@ -42,8 +56,11 @@ const Post = ({
           {tags.map(tag => `#${tag}`)}
         </Typography>
       </div>
+      <Typography className={classes.title} variant='h5' gutterBottom>
+        {title}
+      </Typography>
       <CardContent>
-        <Typography className={classes.title} variant='h5' gutterBottom>
+        <Typography variant='h5' gutterBottom>
           {message}
         </Typography>
       </CardContent>
