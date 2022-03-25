@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux';
+
 import {
   Card,
   CardActions,
@@ -12,6 +14,8 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+
+import { deletePost } from '../../../actions/posts';
 
 import useStyles from './styles';
 
@@ -28,8 +32,9 @@ const Post = ({
   },
   setCurrentId,
 }) => {
-  dayjs.extend(relativeTime);
+  const dispatch = useDispatch();
   const classes = useStyles();
+  dayjs.extend(relativeTime);
 
   return (
     <Card className={classes.card}>
@@ -70,7 +75,11 @@ const Post = ({
           Like
           {likeCount}
         </Button>
-        <Button size='small' color='primary' onClick={() => {}}>
+        <Button
+          size='small'
+          color='primary'
+          onClick={() => dispatch(deletePost(_id))}
+        >
           <DeleteIcon fontSize='small' />
           Delete
         </Button>
