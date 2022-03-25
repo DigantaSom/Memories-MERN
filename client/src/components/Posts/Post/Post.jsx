@@ -15,7 +15,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import { deletePost } from '../../../actions/posts';
+import { deletePost, likePost } from '../../../actions/posts';
 
 import useStyles from './styles';
 
@@ -65,12 +65,16 @@ const Post = ({
         {title}
       </Typography>
       <CardContent>
-        <Typography variant='h5' gutterBottom>
+        <Typography variant='body2' color='textSecondary' component='p'>
           {message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size='small' color='primary' onClick={() => {}}>
+        <Button
+          size='small'
+          color='primary'
+          onClick={() => dispatch(likePost(_id))}
+        >
           <ThumbUpAltIcon fontSize='small' />
           Like
           {likeCount}

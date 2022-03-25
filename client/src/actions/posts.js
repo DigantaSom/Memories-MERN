@@ -4,6 +4,7 @@ export const FETCH_ALL = 'FETCH_ALL';
 export const CREATE = 'CREATE';
 export const UPDATE = 'UPDATE';
 export const DELETE = 'DELETE';
+export const LIKE = 'LIKE';
 
 export const getPosts = () => async dispatch => {
   try {
@@ -47,6 +48,18 @@ export const deletePost = id => async dispatch => {
     dispatch({
       type: DELETE,
       payload: id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const likePost = id => async dispatch => {
+  try {
+    const { data } = await api.likePost(id);
+    dispatch({
+      type: LIKE,
+      payload: data,
     });
   } catch (err) {
     console.log(err);

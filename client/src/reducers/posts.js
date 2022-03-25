@@ -1,4 +1,4 @@
-import { CREATE, DELETE, FETCH_ALL, UPDATE } from '../actions/posts';
+import { CREATE, DELETE, FETCH_ALL, LIKE, UPDATE } from '../actions/posts';
 
 const initialState = [];
 
@@ -17,6 +17,11 @@ const postsReducer = (state = initialState, action) => {
 
     case DELETE:
       return state.filter(post => post._id !== action.payload);
+
+    case LIKE:
+      return state.map(post =>
+        post._id === action.payload._id ? action.payload : post
+      );
 
     default:
       return state;
