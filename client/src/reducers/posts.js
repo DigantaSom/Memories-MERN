@@ -1,4 +1,10 @@
-import { CREATE, DELETE, FETCH_ALL, LIKE, UPDATE } from '../actions/posts';
+import {
+  CREATE,
+  DELETE,
+  FETCH_ALL,
+  LIKE,
+  UPDATE,
+} from '../constants/actionTypes';
 
 const initialState = [];
 

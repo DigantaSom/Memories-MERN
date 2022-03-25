@@ -58,7 +58,7 @@ const Post = ({
       </div>
       <div className={classes.details}>
         <Typography variant='body2' color='textSecondary'>
-          {tags.map(tag => `#${tag}`)}
+          {tags.map(tag => `#${tag} `)}
         </Typography>
       </div>
       <Typography className={classes.title} variant='h5' gutterBottom>
@@ -76,7 +76,7 @@ const Post = ({
           onClick={() => dispatch(likePost(_id))}
         >
           <ThumbUpAltIcon fontSize='small' />
-          Like
+          &nbsp; Like &nbsp;
           {likeCount}
         </Button>
         <Button

@@ -1,10 +1,12 @@
 import * as api from '../api';
 
-export const FETCH_ALL = 'FETCH_ALL';
-export const CREATE = 'CREATE';
-export const UPDATE = 'UPDATE';
-export const DELETE = 'DELETE';
-export const LIKE = 'LIKE';
+import {
+  FETCH_ALL,
+  CREATE,
+  UPDATE,
+  DELETE,
+  LIKE,
+} from '../constants/actionTypes';
 
 export const getPosts = () => async dispatch => {
   try {
