@@ -16,7 +16,7 @@ export default makeStyles(theme => ({
   image: {
     marginLeft: '15px',
   },
-  tooBar: {
+  toolBar: {
     display: 'flex',
     justifyContent: 'flex-end',
     width: 400,
