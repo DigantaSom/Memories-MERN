@@ -1,9 +1,20 @@
 import axios from 'axios';
 
-const ENDPOINT = 'http://localhost:4000/posts';
+const API = axios.create({ baseURL: 'http://localhost:4000' });
 
-export const fetchPosts = () => axios.get(ENDPOINT);
-export const createPost = newPost => axios.post(ENDPOINT, newPost);
-export const updatePost = (id, post) => axios.patch(`${ENDPOINT}/${id}`, post);
-export const deletePost = id => axios.delete(`${ENDPOINT}/${id}`);
-export const likePost = id => axios.patch(`${ENDPOINT}/${id}/likePost`);
+// setting the token in the HTTP header of each request, if authenticated
+if (localStorage.getItem('profile')) {
+  // 'Authorization' can be lowercase as well (in client), but it's strictly lowercase in the server
+  API.defaults.headers.common['Authorization'] = `Bearer ${
+    JSON.parse(localStorage.getItem('profile')).token
+  }`;
+}
+
+export const fetchPosts = () => API.get('/posts');
+export const createPost = newPost => API.post('/posts', newPost);
+export const updatePost = (id, post) => API.patch(`/posts/${id}`, post);
+export const deletePost = id => API.delete(`/posts/${id}`);
+export const likePost = id => API.patch(`/posts/${id}/likePost`);
+
+export const signUp = formData => API.post('/users/signup', formData);
+export const signIn = formData => API.post('/users/signin', formData);

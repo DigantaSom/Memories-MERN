@@ -12,8 +12,13 @@ export const getPosts = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  const body = req.body;
-  const newPost = new PostMessage(body);
+  const post = req.body;
+  const newPost = new PostMessage({
+    ...post,
+    creator: req.userId,
+    createdAt: new Date().toISOString(),
+  });
+  console.log(newPost);
   try {
     await newPost.save();
     res.status(201).json(newPost);
@@ -57,17 +62,28 @@ export const deletePost = async (req, res) => {
   }
 };
 export const likePost = async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({
+      message: 'Unauthorized to Like Post',
+    });
+  }
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send('No post with that ID.');
   }
   try {
     const post = await PostMessage.findById(id);
-    const updatedPost = await PostMessage.findByIdAndUpdate(
-      id,
-      { likeCount: post.likeCount + 1 },
-      { new: true }
-    );
+    const index = post.likes.findIndex(id => id === String(req.userId));
+    if (index === -1) {
+      // if user wants to like the post
+      post.likes.push(req.userId);
+    } else {
+      // if user wants to remove their like from the post
+      post.likes = post.likes.filter(id => id !== String(req.userId));
+    }
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
+      new: true,
+    });
     res.json(updatedPost);
   } catch (err) {
     console.log(err);

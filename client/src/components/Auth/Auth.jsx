@@ -12,24 +12,44 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { GoogleLogin } from 'react-google-login';
 
-import { authenticate } from '../../actions/auth';
+import { authenticate, signUp, signIn } from '../../actions/auth';
 
 import Input from './Input';
 import Icon from './icon';
 
 import useStyles from './styles';
 
+const initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmedPassword: '',
+};
+
 const Auth = () => {
+  const [formData, setFormData] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
 
-  const handleChange = () => {};
+  const handleChange = e => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    if (isSignup) {
+      dispatch(signUp(formData, navigate));
+    } else {
+      dispatch(signIn(formData, navigate));
+    }
   };
 
   const handleShowPassword = () => {
