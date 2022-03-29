@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
@@ -16,11 +16,11 @@ const Navbar = () => {
   const location = useLocation();
   const classes = useStyles();
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatch(logout());
     navigate('/');
     setUser(null);
-  };
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     const token = user?.token;
@@ -31,7 +31,7 @@ const Navbar = () => {
       }
     }
     setUser(JSON.parse(localStorage.getItem('profile')));
-  }, [location]);
+  }, [location, handleLogout, user?.token]);
 
   return (
     <AppBar position='static' color='inherit' className={classes.appBar}>
