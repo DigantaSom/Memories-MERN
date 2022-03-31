@@ -7,7 +7,9 @@ import decode from 'jwt-decode';
 import { logout } from '../../actions/auth';
 
 import useStyles from './styles';
-import memories from '../../images/memories.png';
+
+import memoriesLogo from '../../images/memories-logo.png';
+import memoriesText from '../../images/memories-text.png';
 
 const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -35,23 +37,15 @@ const Navbar = () => {
 
   return (
     <AppBar position='static' color='inherit' className={classes.appBar}>
-      <div className={classes.brandContainer}>
-        <Typography
-          component={Link}
-          to='/'
-          variant='h2'
-          align='center'
-          className={classes.heading}
-        >
-          Memories
-        </Typography>
+      <Link to='/' className={classes.brandContainer}>
+        <img src={memoriesText} alt='icon' height='45px' />
         <img
-          src={memories}
+          src={memoriesLogo}
           alt='memories'
-          height='60'
+          height='40px'
           className={classes.image}
         />
-      </div>
+      </Link>
       <Toolbar className={classes.toolBar}>
         {user ? (
           <div className={classes.profile}>
