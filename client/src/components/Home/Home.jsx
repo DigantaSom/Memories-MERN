@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import ChipInput from 'material-ui-chip-input';
 
-import { getPosts } from '../../actions/posts';
+import { getPosts, getPostsBySearch } from '../../actions/posts';
 
 import Posts from '../Posts/Posts';
 import Form from '../Form/Form';
@@ -39,8 +39,13 @@ const Home = () => {
   }, [dispatch, currentId]);
 
   const searchPosts = () => {
-    if (searchTerm.trim()) {
-      // TODO: dispatch -> fetch search post(s)
+    if (searchTerm.trim() || tags) {
+      dispatch(getPostsBySearch({ searchTerm, tags: tags.join(',') }));
+      navigate(
+        `/posts/search?searchQuery=${searchTerm || 'none'}&tags=${tags.join(
+          ','
+        )}`
+      );
     } else {
       navigate('/');
     }

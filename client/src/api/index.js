@@ -11,6 +11,12 @@ if (localStorage.getItem('profile')) {
 }
 
 export const fetchPosts = () => API.get('/posts');
+export const fetchPostsBySearch = searchQuery =>
+  API.get(
+    `/posts/search?searchQuery=${searchQuery.searchTerm || 'none'}&tags=${
+      searchQuery.tags
+    }`
+  );
 export const createPost = newPost => API.post('/posts', newPost);
 export const updatePost = (id, post) => API.patch(`/posts/${id}`, post);
 export const deletePost = id => API.delete(`/posts/${id}`);

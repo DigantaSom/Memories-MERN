@@ -2,6 +2,7 @@ import {
   CREATE,
   DELETE,
   FETCH_ALL,
+  FETCH_BY_SEARCH,
   LIKE,
   UPDATE,
 } from '../constants/actionTypes';
@@ -11,6 +12,9 @@ const initialState = [];
 const postsReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_ALL:
+      return action.payload;
+
+    case FETCH_BY_SEARCH:
       return action.payload;
 
     case CREATE:

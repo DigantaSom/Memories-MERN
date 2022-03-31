@@ -5,6 +5,7 @@ import {
   UPDATE,
   DELETE,
   LIKE,
+  FETCH_BY_SEARCH,
 } from '../constants/actionTypes';
 
 export const getPosts = () => async dispatch => {
@@ -16,6 +17,21 @@ export const getPosts = () => async dispatch => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const getPostsBySearch = searchQuery => async dispatch => {
+  try {
+    const {
+      data: { data },
+    } = await api.fetchPostsBySearch(searchQuery);
+
+    dispatch({
+      type: FETCH_BY_SEARCH,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
 
