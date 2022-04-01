@@ -11,14 +11,14 @@ import {
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import { getPost } from '../../actions/posts';
+import { getPost, getPostsBySearch } from '../../actions/posts';
 
 import useStyles from './styles';
 
 const PostDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { post, isLoading } = useSelector(state => state.posts);
+  const { posts, post, isLoading } = useSelector(state => state.posts);
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -27,6 +27,16 @@ const PostDetails = () => {
   useEffect(() => {
     dispatch(getPost(id));
   }, [dispatch, id]);
+
+  useEffect(() => {
+    dispatch(
+      getPostsBySearch({ searchTerm: 'none', tags: post?.tags.join(',') })
+    );
+  }, [dispatch, post]);
+
+  const openPost = id => {
+    navigate(`/posts/${id}`);
+  };
 
   if (!post) {
     return null;
@@ -39,6 +49,8 @@ const PostDetails = () => {
       </Paper>
     );
   }
+
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
 
   return (
     <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
@@ -83,6 +95,40 @@ const PostDetails = () => {
           />
         </div>
       </div>
+
+      {recommendedPosts.length > 0 && (
+        <div className={classes.section}>
+          <Typography gutterBottom variant='h5'>
+            You might also like
+          </Typography>
+          <Divider />
+          <div className={classes.recommendedPosts}>
+            {recommendedPosts.map(
+              ({ _id, title, message, name, likes, selectedFile }) => (
+                <div
+                  key={id}
+                  style={{ margin: 20, cursor: 'pointer' }}
+                  onClick={() => openPost(_id)}
+                >
+                  <Typography gutterBottom variant='h6'>
+                    {title}
+                  </Typography>
+                  <Typography gutterBottom variant='subtitle2'>
+                    {name}
+                  </Typography>
+                  <Typography gutterBottom variant='subtitle2'>
+                    {message}
+                  </Typography>
+                  <Typography gutterBottom variant='subtitle1'>
+                    Likes: {likes.length}
+                  </Typography>
+                  <img src={selectedFile} alt={title} width={200} />
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      )}
     </Paper>
   );
 };
