@@ -1,5 +1,6 @@
 import * as api from '../api';
 import {
+  FETCH_POST,
   FETCH_ALL,
   FETCH_BY_SEARCH,
   START_LOADING,
@@ -9,6 +10,19 @@ import {
   DELETE,
   LIKE,
 } from '../constants/actionTypes';
+
+export const getPost = id => async dispatch => {
+  dispatch({ type: START_LOADING });
+
+  try {
+    const { data } = await api.fetchPost(id);
+
+    dispatch({ type: FETCH_POST, payload: data });
+    dispatch({ type: END_LOADING });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const getPosts = page => async dispatch => {
   dispatch({ type: START_LOADING });

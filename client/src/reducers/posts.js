@@ -1,16 +1,18 @@
 import {
   START_LOADING,
   END_LOADING,
-  CREATE,
-  DELETE,
+  FETCH_POST,
   FETCH_ALL,
   FETCH_BY_SEARCH,
-  LIKE,
+  CREATE,
+  DELETE,
   UPDATE,
+  LIKE,
 } from '../constants/actionTypes';
 
 const initialState = {
   posts: [],
+  post: null,
   currentPage: 1,
   numberOfPages: 0,
   isLoading: false,
@@ -28,6 +30,12 @@ const postsReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+      };
+
+    case FETCH_POST:
+      return {
+        ...state,
+        post: action.payload,
       };
 
     case FETCH_ALL:

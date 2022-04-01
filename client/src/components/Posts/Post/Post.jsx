@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Card,
@@ -6,6 +7,7 @@ import {
   CardContent,
   CardMedia,
   Button,
+  ButtonBase,
   Typography,
 } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
@@ -35,7 +37,9 @@ const Post = ({
   setCurrentId,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const classes = useStyles();
+
   dayjs.extend(relativeTime);
 
   const user = JSON.parse(localStorage.getItem('profile'));
@@ -68,41 +72,48 @@ const Post = ({
     );
   };
 
+  const openPost = () => {
+    navigate(`/posts/${_id}`);
+  };
+
   return (
     <Card className={classes.card} raised elevation={6}>
-      <CardMedia
-        className={classes.media}
-        image={selectedFile || ''}
-        title={title}
-      />
-      <div className={classes.overlay}>
-        <Typography variant='h6'>{name}</Typography>
-        <Typography variant='body2'>{dayjs(createdAt).fromNow()}</Typography>
-      </div>
-      {(user?.result.googleId === creator || user?.result._id === creator) && (
-        <div className={classes.overlay2}>
-          <Button
-            style={{ color: 'white' }}
-            size='small'
-            onClick={() => setCurrentId(_id)}
-          >
-            <MoreHorizIcon fontSize='medium' />
-          </Button>
+      <ButtonBase className={classes.cardAction} onClick={openPost}>
+        <CardMedia
+          className={classes.media}
+          image={selectedFile || ''}
+          title={title}
+        />
+        <div className={classes.overlay}>
+          <Typography variant='h6'>{name}</Typography>
+          <Typography variant='body2'>{dayjs(createdAt).fromNow()}</Typography>
         </div>
-      )}
-      <div className={classes.details}>
-        <Typography variant='body2' color='textSecondary'>
-          {tags.map(tag => `#${tag} `)}
+        {(user?.result.googleId === creator ||
+          user?.result._id === creator) && (
+          <div className={classes.overlay2}>
+            <Button
+              style={{ color: 'white' }}
+              size='small'
+              onClick={() => setCurrentId(_id)}
+            >
+              <MoreHorizIcon fontSize='medium' />
+            </Button>
+          </div>
+        )}
+        <div className={classes.details}>
+          <Typography variant='body2' color='textSecondary'>
+            {tags.map(tag => `#${tag} `)}
+          </Typography>
+        </div>
+        <Typography className={classes.title} variant='h5' gutterBottom>
+          {title}
         </Typography>
-      </div>
-      <Typography className={classes.title} variant='h5' gutterBottom>
-        {title}
-      </Typography>
-      <CardContent>
-        <Typography variant='body2' color='textSecondary' component='p'>
-          {message}
-        </Typography>
-      </CardContent>
+        <CardContent>
+          <Typography variant='body2' color='textSecondary' component='p'>
+            {message}
+          </Typography>
+        </CardContent>
+      </ButtonBase>
       <CardActions className={classes.cardActions}>
         <Button
           size='small'
