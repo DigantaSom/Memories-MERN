@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import FileBase from 'react-file-base64';
@@ -17,9 +18,10 @@ const initialPostState = {
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState(initialPostState);
   const post = useSelector(state =>
-    currentId ? state.posts.find(p => p._id === currentId) : null
+    currentId ? state.posts.posts.find(p => p._id === currentId) : null
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const classes = useStyles();
 
   const user = JSON.parse(localStorage.getItem('profile'));
@@ -49,10 +51,13 @@ const Form = ({ currentId, setCurrentId }) => {
       );
     } else {
       dispatch(
-        createPost({
-          ...postData,
-          name: user?.result?.name || user?.result?.givenName,
-        })
+        createPost(
+          {
+            ...postData,
+            name: user?.result?.name || user?.result?.givenName,
+          },
+          navigate
+        )
       );
     }
     onClear();

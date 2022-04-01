@@ -52,7 +52,7 @@ export const getPostsBySearch = searchQuery => async dispatch => {
   }
 };
 
-export const createPost = post => async dispatch => {
+export const createPost = (post, navigate) => async dispatch => {
   dispatch({ type: START_LOADING });
 
   try {
@@ -61,6 +61,7 @@ export const createPost = post => async dispatch => {
       type: CREATE,
       payload: data,
     });
+    navigate(`/posts/${data._id}`);
   } catch (err) {
     console.log(err);
   }
