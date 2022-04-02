@@ -11,6 +11,8 @@ import {
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
+import CommentSection from './CommentSection';
+
 import { getPost, getPostsBySearch } from '../../actions/posts';
 
 import useStyles from './styles';
@@ -79,9 +81,7 @@ const PostDetails = () => {
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
           <Divider style={{ margin: '20px 0' }} />
-          <Typography variant='body1'>
-            <strong>Comments - coming soon!</strong>
-          </Typography>
+          <CommentSection post={post} />
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={classes.imageSection}>
