@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,6 +37,7 @@ const Post = ({
   },
   setCurrentId,
 }) => {
+  const [postLikes, setPostLikes] = useState(likes);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
@@ -43,24 +45,38 @@ const Post = ({
   dayjs.extend(relativeTime);
 
   const user = JSON.parse(localStorage.getItem('profile'));
+  const userId = user?.result?.googleId || user?.result?._id;
+  const hasLikedPost = likes.find(like => like === userId);
+
+  const openPost = () => {
+    navigate(`/posts/${_id}`);
+  };
+
+  const handleClickLike = async () => {
+    dispatch(likePost(_id));
+
+    if (hasLikedPost) {
+      setPostLikes(likes.filter(id => id !== userId));
+    } else {
+      setPostLikes([...likes, userId]);
+    }
+  };
 
   const Likes = () => {
-    if (likes.length > 0) {
-      return likes.find(
-        like => like === (user?.result?.googleId || user?.result?._id)
-      ) ? (
+    if (postLikes.length > 0) {
+      return hasLikedPost ? (
         <>
           <ThumbUpAltIcon fontSize='small' />
           &nbsp;
-          {likes.length > 2
-            ? `You and ${likes.length - 1} others`
-            : `${likes.length} like${likes.length > 1 ? 's' : ''}`}
+          {postLikes.length > 2
+            ? `You and ${postLikes.length - 1} others`
+            : `${postLikes.length} like${postLikes.length > 1 ? 's' : ''}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlinedIcon fontSize='small' />
-          &nbsp;{likes.length}&nbsp;
-          {likes.length === 1 ? 'Like' : 'Likes'}
+          &nbsp;{postLikes.length}&nbsp;
+          {postLikes.length === 1 ? 'Like' : 'Likes'}
         </>
       );
     }
@@ -70,10 +86,6 @@ const Post = ({
         &nbsp;Like
       </>
     );
-  };
-
-  const openPost = () => {
-    navigate(`/posts/${_id}`);
   };
 
   return (
@@ -118,7 +130,7 @@ const Post = ({
         <Button
           size='small'
           color='primary'
-          onClick={() => dispatch(likePost(_id))}
+          onClick={handleClickLike}
           disabled={!user?.result}
         >
           <Likes />
